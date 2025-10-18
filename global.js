@@ -17,16 +17,18 @@ if (currentLink) {
 
 let pages = [
   { url: '', title: 'Home' },
-  { url: 'projects.html', title: 'Projects' },
+  { url: 'projects/', title: 'Projects' },
   { url: 'contact/', title: 'Contact' },
   { url: 'resume/', title: 'Resume' },
   { url: 'https://github.com/paige-saeng', title: 'GitHub' } 
 ];
 
+
 const BASE_PATH =
   location.hostname === 'localhost' || location.hostname === '127.0.0.1'
     ? '/'                     
-    : '/LAB1-TEST/';          
+    : '/Lab1-Test/';
+       
 
 
 let nav = document.createElement('nav');
