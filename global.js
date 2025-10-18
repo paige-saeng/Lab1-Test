@@ -23,12 +23,11 @@ let pages = [
   { url: 'https://github.com/paige-saeng', title: 'GitHub' } 
 ];
 
-
 const BASE_PATH =
   location.hostname === 'localhost' || location.hostname === '127.0.0.1'
     ? '/'                     
-    : '/Lab1-Test/';
-       
+    : '/Lab1-Test/';  
+
 
 
 let nav = document.createElement('nav');
