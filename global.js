@@ -17,11 +17,12 @@ if (currentLink) {
 
 let pages = [
   { url: '', title: 'Home' },
-  { url: 'projects/', title: 'Projects' },
-  { url: 'contact/', title: 'Contact' },
-  { url: 'resume/', title: 'Resume' },
-  { url: 'https://github.com/paige-saeng', title: 'GitHub' } 
+  { url: 'projects.html', title: 'Projects' },
+  { url: 'contact.html', title: 'Contact' },
+  { url: 'resume.html', title: 'Resume' },
+  { url: 'https://github.com/paige-saeng', title: 'GitHub' }
 ];
+
 
 const BASE_PATH =
   location.hostname === 'localhost' || location.hostname === '127.0.0.1'
