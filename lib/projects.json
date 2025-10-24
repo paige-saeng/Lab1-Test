@@ -1,0 +1,74 @@
+[
+    {
+        "title": "Bio Spark Tahoe",
+		"year": "2025",
+        "image": "../images/matcha-tea-ceremony.webp",
+        "description": "\n          Focused on exploring and preprocessing a large-scale gene expression dataset.\n          Specifically working with the TAHOE-100M dataset, which contains transcriptional\n          response profiles from various drug perturbations in different cell types.\n        "
+    },
+    {
+        "title": "Time Series Analysis: Mercury Retrograde and Stock Market Performance",
+        "year" : "2023",
+		"image": "../images/matcha-tea-ceremony.webp",
+        "description": "\n          Examined correlation and cyclicality between various stock market index returns and\n          Mercury’s planetary cycle to quantify a cultural phenomenon, discovering that its\n          simple returns mirrored the planet's cycle.\n        "
+    },
+    {
+        "title": "Dating Style Exploratory Analysis",
+		"year": "2024",
+        "image": "../images/matcha-tea-ceremony.webp",
+        "description": "\n          Designed and conducted a behavioral study examining the success of various dating styles.\n          Identified correlations between personality traits and relationship outcomes using\n          multivariate techniques.\n        "
+    },
+    {
+		"title": "Example Project 4",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 5",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 6",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 7",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 8",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 9",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 10",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 11",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  },
+	  {
+		"title": "Example Project 12",
+		"year": "2021",
+		"image": "https://via.placeholder.com/300x200",
+		"description": "This is a placeholder project description."
+	  }
+]

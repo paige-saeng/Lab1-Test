@@ -4,8 +4,6 @@ function $$(selector, context = document){
     return Array.from(context.querySelectorAll(selector));
 }
 
-// Helper function: returns an array of elements matching a selector
-var $$ = (selector) => Array.from(document.querySelectorAll(selector));
 let navLinks = $$("nav a");
 let currentLink = navLinks.find(
   (a) => a.host === location.host && a.pathname === location.pathname
@@ -85,3 +83,73 @@ if (saved) {
   root.style.colorScheme = saved;
   themeSelect.value = saved;
 }
+
+// lab 4 
+export async function fetchJSON(url) {
+  try {
+    // Fetch the JSON file from the given URL
+    const response = await fetch(url);
+
+    // Check if the response was successful
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+
+    // inspect the response object
+    console.log(response);
+
+    // Parse the response body as JSON
+    const data = await response.json();
+
+    // Return the parsed data
+    return data;
+  } catch (error) {
+    console.error('Error fetching or parsing JSON data:', error);
+  }
+}
+
+
+//step1.5
+export function renderProjects(projects, containerElement, headingLevel = 'h2') {
+  // Step 1: Validate inputs
+  if (!Array.isArray(projects)) {
+    console.error('renderProjects: projects is not an array', projects);
+    return;
+  }
+
+  if (!(containerElement instanceof HTMLElement)) {
+    console.error('renderProjects: containerElement is invalid', containerElement);
+    return;
+  }
+
+  const validHeadings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  if (!validHeadings.includes(headingLevel)) headingLevel = 'h2';
+
+
+  //  Handle empty projects array
+  if (projects.length === 0) {
+    containerElement.innerHTML = '<p>No projects available at the moment.</p>';
+    return;
+  }
+
+  //  Loop through projects
+  projects.forEach(project => {
+    const article = document.createElement('article');
+
+    // Create HTML safely
+    article.innerHTML = `
+      <${headingLevel}>${project.title || 'Untitled Project'}</${headingLevel}>
+      ${project.image ? `<img src="${project.image}" alt="${project.title || 'Project image'}">` : ''}
+      <p>${project.description || 'No description available.'}</p>
+    `;
+
+    // Append article to container
+    containerElement.appendChild(article);
+  });
+}
+export async function fetchGitHubData(username) {
+  return fetchJSON(`https://api.github.com/users/${username}`);
+}
+
+
+
