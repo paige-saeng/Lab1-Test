@@ -109,7 +109,7 @@ export async function fetchJSON(url) {
 }
 
 
-//step1.5
+//step1.5 and lab 5
 export function renderProjects(projects, containerElement, headingLevel = 'h2') {
   // Step 1: Validate inputs
   if (!Array.isArray(projects)) {
@@ -132,20 +132,40 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     return;
   }
 
-  //  Loop through projects
+  //  Loop through each projects
   projects.forEach(project => {
     const article = document.createElement('article');
+// Build inner content step by step to avoid HTML parsing issues
+const title = document.createElement(headingLevel);
+title.textContent = project.title || 'Untitled Project';
 
-    // Create HTML safely
-    article.innerHTML = `
-      <${headingLevel}>${project.title || 'Untitled Project'}</${headingLevel}>
-      ${project.image ? `<img src="${project.image}" alt="${project.title || 'Project image'}">` : ''}
-      <p>${project.description || 'No description available.'}</p>
-    `;
+if (project.image) {
+  const img = document.createElement('img');
+  img.src = project.image;
+  img.alt = project.title || 'Project image';
+  article.appendChild(img);
+}
 
-    // Append article to container
-    containerElement.appendChild(article);
-  });
+const infoDiv = document.createElement('div');
+infoDiv.classList.add('project-info');
+
+const description = document.createElement('p');
+description.textContent = project.description || 'No description available.';
+infoDiv.appendChild(description);
+
+// ✅ Add year safely
+if (project.year) {
+  const year = document.createElement('p');
+  year.classList.add('project-year');
+  year.textContent = `Year: ${project.year}`;
+  infoDiv.appendChild(year);
+}
+
+// Append all elements
+article.appendChild(title);
+article.appendChild(infoDiv);
+containerElement.appendChild(article);
+});
 }
 export async function fetchGitHubData(username) {
   return fetchJSON(`https://api.github.com/users/${username}`);

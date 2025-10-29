@@ -250,3 +250,66 @@ nav a:hover {
   text-align: center;
   margin: 0;
 }
+/* lab 5 */
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.project-year {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+/* limit size and spacing */
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible;
+}
+
+/* Step 2.3: Layout container for pie chart and legend */
+.container {
+  display: flex;
+  align-items: flex-start;      /* vertically centers pie + legend */
+  gap: 2rem auto;                /* space between pie and legend */
+  flex-wrap: wrap;  
+  justify-content: center;  /* center the whole thing on page */
+  margin: 2rem auto 0 auto 0;
+  max-width: 100%;        /* keeps layout responsive */
+}
+
+/* SVG styling */
+svg#projects-plot {
+  width: 40vw; /* scales with window width */
+  max-width: 200px;
+  height: auto;
+}
+
+/* Legend styling */
+.legend {
+  padding: 1rem;            /* inner spacing */
+  border: 2px solid #ccc;   /* subtle border */
+  border-radius: 8px;      /* smooth corners */
+  background: #f9f9f9;      /* light background */
+  font-family: sans-serif;
+  flex: 1 1 auto;                  /* let legend take up remaining space */
+  min-width: 180px;         /* ensures readability */
+  max-width: 100%;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.legend .swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background-color: var(--color);
+  display: inline-block;
+  margin-right: 0.5rem;
+}

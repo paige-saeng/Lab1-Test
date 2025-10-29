@@ -6,6 +6,54 @@
   <link rel="stylesheet" href="../style.css"> 
 </head>
 <body>
+  <div class = "container"> 
+    <svg id="projects-plot" viewBox="-50 -50 100 100" ></svg>
+    <ul class = "legend"></ul>
+  </div>
+
+<script type="module">
+    // Import D3 from CDN
+    import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+
+
+    const data = [
+        { value: 1, label: 'apples' },
+        { value: 2, label: 'oranges' },
+        { value: 3, label: 'mangos' },
+        { value: 4, label: 'pears' },
+        { value: 5, label: 'limes' },
+        { value: 5, label: 'cherries' },
+    ];
+    // Create an arc generator
+    const arcGenerator = d3.arc()
+      .innerRadius(0)    // inner radius (0 = full circle)
+      .outerRadius(50);  // outer radius (size of circle)
+
+
+    const sliceGenerator = d3.pie().value((d) => d.value);
+    const arcData = sliceGenerator(data);
+    const colors =d3.scaleOrdinal(d3.schemeTableau10)
+    const svg = d3.select("#projects-plot");
+    
+
+    svg.selectAll("path")
+        .data(arcData)
+        .join("path")
+        .attr("d", arcGenerator)
+        .attr("fill", (d, i) => colors(i))
+        .attr("stroke", "white")
+        .attr("stroke-width", 1);
+    
+        const legend = d3.select(".legend");
+
+        data.forEach((d, idx) => {
+            legend.append("li")
+                .attr("style", `--color:${colors(idx)}`)
+                .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
+        });
+ 
+
+  </script>
 
   <main>
     <h1 class="projects-title">Welcome to my Portfolio!</h1>
@@ -13,6 +61,7 @@
     <div class="projects">
       
     </div>
+    
   </main>
 
   
