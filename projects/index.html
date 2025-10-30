@@ -9,62 +9,157 @@
   <div class = "container"> 
     <svg id="projects-plot" viewBox="-50 -50 100 100" ></svg>
     <ul class = "legend"></ul>
-  </div>
-
-<script type="module">
-    // Import D3 from CDN
-    import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
-
-
-    const data = [
-        { value: 1, label: 'apples' },
-        { value: 2, label: 'oranges' },
-        { value: 3, label: 'mangos' },
-        { value: 4, label: 'pears' },
-        { value: 5, label: 'limes' },
-        { value: 5, label: 'cherries' },
-    ];
-    // Create an arc generator
-    const arcGenerator = d3.arc()
-      .innerRadius(0)    // inner radius (0 = full circle)
-      .outerRadius(50);  // outer radius (size of circle)
-
-
-    const sliceGenerator = d3.pie().value((d) => d.value);
-    const arcData = sliceGenerator(data);
-    const colors =d3.scaleOrdinal(d3.schemeTableau10)
-    const svg = d3.select("#projects-plot");
-    
-
-    svg.selectAll("path")
-        .data(arcData)
-        .join("path")
-        .attr("d", arcGenerator)
-        .attr("fill", (d, i) => colors(i))
-        .attr("stroke", "white")
-        .attr("stroke-width", 1);
-    
-        const legend = d3.select(".legend");
-
-        data.forEach((d, idx) => {
-            legend.append("li")
-                .attr("style", `--color:${colors(idx)}`)
-                .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
-        });
- 
-
-  </script>
-
-  <main>
+  </div> 
+  <input 
+    class="searchBar"
+    type = "search"
+    aria-label ="Search projects"
+    placeholder = "Search projects..."
+    />
+ <main>
     <h1 class="projects-title">Welcome to my Portfolio!</h1>
     <h2> Latest Projects</h2>
     <div class="projects">
       
     </div>
     
-  </main>
+</main>
+<script type="module">
+  // Import D3 from CDN
+  import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+
+  const projects = await d3.json("../lib/projects.json");
+  const projectsContainer = document.querySelector(".projects");
+  const searchInput = document.querySelector(".searchBar");
+  let selectedIndex = -1;
+  
+  function renderPieChart(projectsGiven) {
+    // group by year
+    const rolledData = d3.rollups(
+      projectsGiven,
+      (v) => v.length,
+      (d) => d.year
+    );
+    const pieData = rolledData.map(([year, count]) => ({
+      label: year,
+      value: count,
+    }));
+
+    const svg = d3.select("#projects-plot");
+    svg.selectAll("*").remove();
+
+    const legend = d3.select(".legend");
+    legend.selectAll("*").remove();
+
+    // arc / pie generators
+    const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+    const sliceGenerator = d3.pie().value((d) => d.value);
+    const arcData = sliceGenerator(pieData);
+    const colors = d3.scaleOrdinal(d3.schemeTableau10);
+
+    // Draw pie slices
+    svg.selectAll("path")
+      .data(arcData)
+      .join("path")
+      .attr("d", arcGenerator)
+      .attr("fill", (d, i) => colors(i))
+      .attr("class", (d, i) => (i === selectedIndex ? "selected" : ""))
+      .on("click", function (event, d) {
+        selectedIndex = selectedIndex === d.index ? -1 : d.index;
+        const selectedYear = selectedIndex === -1 ? null : d.data.label;
+        svg.selectAll("path")
+            .attr("class", (_, i) => (i === selectedIndex ? "selected" : ""));
+
+        legend.selectAll("li")
+            .attr("class", (_, i) => (i === selectedIndex ? "selected" : ""));
+
+        const filteredProjects = selectedYear
+          ? projectsGiven.filter(p => p.year === selectedYear)
+          : projectsGiven;
+
+        renderProjects(filteredProjects, projectsContainer, "h2");
+      });
+
+
+    legend
+      .selectAll("li")
+      .data(pieData)
+      .join("li")
+      .attr("style", (d, i) => `--color:${colors(i)}`)
+      .attr("class", (d, i) => (i === selectedIndex ? "selected" : ""))
+      .style("cursor", "pointer")
+      .html(
+        (d) => `<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`
+      )
+      .on("click", function (event, d) {
+        selectedIndex = selectedIndex === d.index ? -1 : d.index;
+        const selectedYear = selectedIndex === -1 ? null : d.data.label;
+        svg.selectAll("path")
+            .attr("class", (_, i) => (i === selectedIndex ? "selected" : ""));
+
+        legend.selectAll("li")
+            .attr("class", (_, i) => (i === selectedIndex ? "selected" : ""));
+
+        const filteredProjects = selectedYear
+          ? projectsGiven.filter(p => p.year === selectedYear)
+          : projectsGiven;
+
+        renderProjects(filteredProjects, projectsContainer, "h2");
+      });
+
+
+  }
+
+  // ------------------------------
+  // Render Projects
+  // ------------------------------
+  function renderProjects(projectsToRender, container, headingTag = "h3") {
+    container.innerHTML = "";
+    projectsToRender.forEach((p) => {
+      const article = document.createElement("article");
+      article.innerHTML = `
+        <${headingTag}>${p.title}</${headingTag}>
+        ${p.image ? `<img src="${p.image}" alt="${p.title}" loading="lazy">` : ""}
+        <p>${p.description || ""}</p>
+        <small>${p.year}</small>
+      `;
+      container.appendChild(article);
+    });
+  }
+
+  // ------------------------------
+  // Update visuals
+  // ------------------------------
+  function updateVisuals(filteredProjects) {
+    renderProjects(filteredProjects, projectsContainer, "h2");
+    renderPieChart(filteredProjects);
+  }
+
+  // Initial render (all projects)
+  updateVisuals(projects);
+
+  // ------------------------------
+  // Search (search across all metadata)
+  // ------------------------------
+  searchInput.addEventListener("input", (event) => {
+    const query = event.target.value.toLowerCase().trim();
+
+    const filteredProjects = projects.filter((project) => {
+      const values = Object.values(project).join("\n").toLowerCase();
+      return values.includes(query);
+    });
+
+    updateVisuals(filteredProjects);
+  });
 
   
+</script>
+
+<script type="module" src="../global.js"></script>
+<script type="module" src="./projects.js"></script>
+<script type="module" src="index.js" defer></script>
+</body>
+</html>
 
   <script type="module" src="../global.js"></script>
   <script type="module" src="./projects.js"></script>

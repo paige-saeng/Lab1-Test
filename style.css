@@ -313,3 +313,47 @@ svg#projects-plot {
   display: inline-block;
   margin-right: 0.5rem;
 }
+
+/* Interactie highlighting in Pie*/
+
+svg:has(path:hover) path:not(:hover) {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+svg path:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Make wedges clickable */
+svg path {
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Highlight hovered wedge */
+svg:has(path:hover) path:not(:hover) {
+  opacity: 0.4;
+}
+
+svg path:hover {
+  transform: scale(1.05);
+}
+
+/* Selected wedge + legend */
+.selected {
+  --color: oklch(60% 45% 0) !important;
+}
+
+.selected:is(path) {
+  fill: var(--color);
+  opacity: 1 !important;
+  transform: scale(1.1);
+}
+
+.selected:is(li) {
+  font-weight: bold;
+  color: var(--color);
+}
