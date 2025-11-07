@@ -1,0 +1,159 @@
+/* --------------------
+   General Page Styles
+-------------------- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9f9f9;
+    color: #333;
+    margin: 20px;
+    line-height: 1.5;
+  }
+  
+  h1, h2 {
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #222;
+  }
+  
+  h2 {
+    margin-top: 40px;
+  }
+  
+  /* --------------------
+     Stats Dashboard
+  -------------------- */
+  .stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .stat-card {
+    flex: 1 1 200px;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .stat-card dt {
+    font-weight: 700;
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 4px;
+  }
+  
+  .stat-card dd {
+    margin: 0;
+    font-size: 1.3em;
+    color: #222;
+  }
+  
+  /* --------------------
+     Scatterplot
+  -------------------- */
+  #chart {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 60px;
+  }
+  
+  svg {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Axes */
+  .axis path,
+  .axis line {
+    stroke: #999;
+  }
+  
+  .axis text {
+    font-size: 12px;
+    fill: #555;
+  }
+  
+  /* Gridlines */
+  .gridlines line {
+    stroke: #ddd;
+    stroke-dasharray: 2,2;
+  }
+  
+  /* Dots */
+  .dots circle {
+    stroke: #fff;
+    stroke-width: 0.5;
+    cursor: pointer;
+    transition: r 0.2s, opacity 0.2s;
+  }
+  
+  .dots circle:hover {
+    r: 6;
+    opacity: 1;
+  }
+  
+/* Tooltip appearance */
+dl.info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  margin: 0;
+  padding: 12px;
+  font-size: 0.9em;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 10;
+  position: fixed;
+}
+
+/* Labels */
+dl.info dt {
+  font-weight: 600;
+  color: #666;
+}
+
+/* Values */
+dl.info dd {
+  margin: 0;
+  font-weight: 500;
+  color: #222;
+}
+
+/* Tooltip hidden by default */
+dl.info[hidden]:not(:hover):not(:focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Dot hover */
+circle {
+  transition: 0.2s;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+circle:hover {
+  transform: scale(1.5);
+  opacity: 1;
+}
+
+circle.selected { fill: #ff6b6b; }
+
+.selection {
+  fill-opacity: 0.1;
+  stroke: black;
+  stroke-opacity: 0.7;
+  stroke-dasharray: 5 3;
+  animation: marching-ants 2s linear infinite;
+}
+
+@keyframes marching-ants { to { stroke-dashoffset: -8; } }
