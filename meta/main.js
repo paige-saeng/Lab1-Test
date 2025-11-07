@@ -222,6 +222,23 @@ function renderScatterPlot(commits) {
   svg.append('g')
     .attr('class', 'brush')
     .call(brush);
+    svg.append('text')
+    .attr('class', 'axis-label')
+    .attr('x', margin.left + usableWidth / 2) // center along X
+    .attr('y', height - 10) // slightly below axis
+    .attr('text-anchor', 'middle')
+    .attr('font-size', '14px')
+    .attr('fill', '#333')
+    .text('Date'); // change this to whatever label you want
+  svg.append('text')
+  .attr('class', 'axis-label')
+  .attr('x', - (margin.top + usableHeight / 2)) // rotated, so x becomes vertical
+  .attr('y', 15) // offset from left margin
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  .attr('font-size', '14px')
+  .attr('fill', '#333')
+  .text('Hour of Day'); // change as needed
 
 
   svg.selectAll('.dots').raise();
