@@ -357,3 +357,287 @@ svg path:hover {
   font-weight: bold;
   color: var(--color);
 }
+/* =========================================================
+   THEME PATCH (append at end of file)
+   Keeps existing styles; only overrides colors for theming
+   ========================================================= */
+
+/* 1) Define theme tokens that work with your existing code */
+:root {
+  /* Light defaults */
+  --bg: canvas;
+  --text: canvastext;
+
+  --surface: color-mix(in oklch, canvas 92%, canvastext 8%);
+  --surface-2: color-mix(in oklch, canvas 96%, canvastext 4%);
+
+  --muted: color-mix(in oklch, canvastext 55%, canvas 45%);
+  --border: color-mix(in oklch, canvastext 20%, canvas 80%);
+
+  --link: color-mix(in oklch, canvastext 85%, oklch(60% 0.18 250) 15%);
+  --link-hover: color-mix(in oklch, var(--link) 80%, canvastext 20%);
+
+  --card-bg: var(--surface);
+  --card-text: var(--text);
+}
+
+/* 2) If you add JS later, you can force dark with <html data-theme="dark"> */
+:root[data-theme="dark"] {
+  /* In dark mode, keep using canvas/canvastext but bias surfaces darker */
+  --surface: color-mix(in oklch, canvas 88%, canvastext 12%);
+  --surface-2: color-mix(in oklch, canvas 84%, canvastext 16%);
+  --muted: color-mix(in oklch, canvastext 65%, canvas 35%);
+  --border: color-mix(in oklch, canvastext 18%, canvas 82%);
+}
+
+/* 3) Apply tokens to core page */
+html {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  color: var(--text); /* overrides your body { color:#333 } */
+}
+
+/* 4) Fix nav readability (you currently force black links) */
+nav {
+  background: var(--surface-2);
+  border-bottom-color: var(--border);
+}
+
+nav a {
+  color: var(--text); /* overrides color:black */
+}
+
+nav a.current,
+nav a.active {
+  color: var(--text);
+}
+
+/* Keep your existing hover effect but ensure it contrasts */
+nav a:hover {
+  color: var(--text);
+}
+
+/* 5) Fix common “#333 / #666” blocks that become too dark in dark mode */
+.resume-section-title,
+.education-item .degree {
+  color: var(--text);
+}
+
+.education-item .date,
+.work-item .date,
+.project-year {
+  color: var(--muted); /* overrides #666 */
+}
+
+/* 6) Cards / blocks used across site */
+.project-item {
+  background: var(--card-bg);   /* overrides #333 */
+  color: var(--card-text);
+  border: 1px solid var(--border);
+}
+
+/* Your legend is hardcoded light; make it theme-aware */
+.legend {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+/* If any text inside legend inherits something weird */
+.legend li {
+  color: var(--text);
+}
+
+/* Optional: make links look consistent sitewide */
+a {
+  color: var(--link);
+}
+a:hover {
+  color: var(--link-hover);
+}
+
+/* Optional: subtle separators that work in both modes */
+.education-item:not(:last-child) {
+  border-bottom-color: var(--border);
+}
+.github-stats,
+#profile-stats {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-block: 1.5rem;
+  max-width: 40rem;
+}
+
+.github-stats dl,
+#profile-stats dl {
+  margin: 0;
+}
+.github-stats dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1rem;
+}
+
+.github-stats dt {
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.github-stats dd {
+  margin: 0;
+}
+
+/* ---------- Page layout ---------- */
+.page {
+  max-width: min(1200px, 95vw); /* wide, but responsive */
+  margin: 0 auto;
+  padding-inline: 1.5rem;
+}
+.github-stats,
+#profile-stats {
+  max-width: 100%;
+}
+
+#profile-stats dl {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+
+/* Make All Projects use the same responsive grid as .projects */
+.projects-all {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1rem;
+}
+
+/* Make each card look consistent */
+.projects article,
+.projects-all article {
+  background: color-mix(in oklch, canvas 92%, canvastext 8%);
+  border: 1px solid color-mix(in oklch, canvastext 18%, canvas 82%);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+/* Prevent giant images */
+.projects article img,
+.projects-all article img {
+  width: 100%;
+  height: 180px;       /* controls “bigness” */
+  object-fit: cover;   /* crops nicely */
+  border-radius: 10px;
+  display: block;
+  margin-block: 0.75rem;
+}
+
+/* Keep titles from looking huge */
+.projects article h2, .projects article h3,
+.projects-all article h2, .projects-all article h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Description spacing */
+.projects article p,
+.projects-all article p {
+  margin: 0.5rem 0;
+  opacity: 0.9;
+}
+
+/* Year styling */
+.projects article small,
+.projects-all article small {
+  opacity: 0.75;
+}
+
+/* --- Grid: keep columns even and aligned --- */
+.projects,
+.projects-all {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* forces 3 across on desktop */
+  gap: 1.5rem;
+  align-items: stretch; /* makes all cards same height */
+}
+
+/* Responsive fallback for smaller screens */
+@media (max-width: 900px) {
+  .projects,
+  .projects-all {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .projects,
+  .projects-all {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Card: flat, no outline --- */
+.projects article,
+.projects-all article {
+  background: color-mix(in oklch, canvas 94%, canvastext 6%);
+  border: none;            /* ✅ remove outline */
+  border-radius: 16px;
+  padding: 1rem;
+
+  display: flex;           /* ✅ equal height behavior */
+  flex-direction: column;
+  gap: 0.75rem;
+
+  /* subtle depth instead of outline */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.projects article h2, .projects article h3,
+.projects-all article h2, .projects-all article h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+/* Image: consistent height so rows line up */
+.projects article img,
+.projects-all article img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Description: clamp so cards stay same height */
+.projects article p,
+.projects-all article p {
+  margin: 0;
+  opacity: 0.9;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;   /* adjust 3–5 as you like */
+  overflow: hidden;
+}
+
+/* Push year to bottom so bottoms align */
+.projects article small,
+.projects-all article small {
+  margin-top: auto;
+  opacity: 0.7;
+}
+
+/* Links: clean */
+.projects article a,
+.projects-all article a {
+  color: inherit;
+  text-decoration: none;
+}
+.projects article a:hover,
+.projects-all article a:hover {
+  text-decoration: underline;
+}

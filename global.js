@@ -87,26 +87,33 @@ if (saved) {
 // lab 4 
 export async function fetchJSON(url) {
   try {
-    // Fetch the JSON file from the given URL
-    const response = await fetch(url);
+    const res = await fetch(url, {
+      method: "GET",
+      mode: "cors",
+      cache: "no-store",
+      headers: {
+        "Accept": "application/vnd.github+json"
+      }
+    });
 
-    // Check if the response was successful
-    if (!response.ok) {
-      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    // If we got a response, show a useful error
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(`HTTP ${res.status} ${res.statusText} for ${url}${body ? ` — ${body}` : ""}`);
     }
 
-    // inspect the response object
-    console.log(response);
-
-    // Parse the response body as JSON
-    const data = await response.json();
-
-    // Return the parsed data
-    return data;
-  } catch (error) {
-    console.error('Error fetching or parsing JSON data:', error);
+    return await res.json();
+  } catch (err) {
+    // This is the "Load failed" / network error case
+    throw new Error(`Fetch error for ${url}: ${err?.message || err}`);
   }
 }
+
+export async function fetchGitHubData(username) {
+  return fetchJSON(`https://api.github.com/users/${username}`);
+}
+
+
 
 
 //step1.5 and lab 5
@@ -167,9 +174,7 @@ article.appendChild(infoDiv);
 containerElement.appendChild(article);
 });
 }
-export async function fetchGitHubData(username) {
-  return fetchJSON(`https://api.github.com/users/${username}`);
-}
+
 
 
 
